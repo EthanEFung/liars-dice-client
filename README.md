@@ -1,46 +1,36 @@
-# Getting Started with Create React App
+# Thoughts
+## How are we to handle the websocket connection?
+  1. We want 1 and only one websocket connection for the client.
+  2. We want to have a useWS hook that can be reusuable in the sense that
+    if we were to export the hook as a stand alone library, the developer
+    would have the option of passing different websockets to the hook.
+## How should we structure our application?
+  1. the home page should be the "lobby" where the user will be able to either create a
+    new game, or see the list of existing games and join one. We can use react router for
+    to differientate between the the create form and the lobby.
+  2. When a user is on the create form they should be able to submit their name, the name
+    of the room, and potentially set a password. On submitting the form, they should be
+    taken to the room.
+## How should the room be structured?
+  1. If the user is the host, they will be able to start a game as soon as at least one
+    other player is present.
+  2. Once the game play starts _all_ users in the room should be able to witness the game.
+  3. If the user is _not_ the host, and the game has _not_ been started, then
+    they will be able to sit, which adds them to the game active players.
+  4. Once sitting all active players should be able to forfeit by leaving the room.
+  5. If the host leaves however, the game ends, the users should be notified, and should
+    be brought back to the lobby.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Route Structure
+- Lobby
+    - Create Form
+    - Room
+    - (Future): Leaderboard
 
-## Available Scripts
+# Room Structure
+  
 
-In the project directory, you can run:
 
-### `npm start`
+    
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+    
