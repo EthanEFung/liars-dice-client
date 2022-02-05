@@ -18,12 +18,8 @@ function useHubDispatch() {
   return context 
 }
 
-interface Room {
-  name: string;
-  hostname: string;
-}
 interface State {
-  rooms: Room[]
+  rooms: string[]
 }
 interface Action {
   type: string;
@@ -38,7 +34,7 @@ function StateProvider(props: React.PropsWithChildren<unknown>) {
       case 'rooms':
         return {
           ...prev,
-          rooms: action.payload as Room[]
+          rooms: action.payload as string[] ?? []
         }
       default:
         return prev
@@ -63,7 +59,7 @@ function HubProvider(props: React.PropsWithChildren<unknown>) {
 function useHub() {
   const state = useHubState()
   const dispatch = useHubDispatch()
-  return [state, dispatch]
+  return [state, dispatch] as const
 }
 
 export { HubProvider, useHubDispatch, useHubState, useHub }
