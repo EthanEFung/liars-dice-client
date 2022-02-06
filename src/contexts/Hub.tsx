@@ -40,7 +40,11 @@ function StateProvider(props: React.PropsWithChildren<unknown>) {
         return prev
     }
   }, { rooms: [] })
-  useWS({ websocket, messageHandler: dispatch })
+  function logAndDispatch(event: unknown) {
+    console.log(event);
+    dispatch(event as Action)
+  }
+  useWS({ websocket, messageHandler: logAndDispatch})
   return <StateContext.Provider value={hub} {...props}></StateContext.Provider>
 }
 

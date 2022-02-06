@@ -1,24 +1,25 @@
 import { useEffect } from 'react';
+import { useAuth } from 'contexts/Auth';
 import { useGoSocket } from 'contexts/GoSocket';
 import { useWS } from 'hooks';
 import { useParams } from 'react-router-dom';
 
 function Room() {
   /* upon mount send to the hub a join */
+  const { username } = useAuth()
   const goSocket = useGoSocket()
-  const send = useWS({ websocket: goSocket, messageHandler: (event) => {
-    console.log(event)
-  } })
+  const send = useWS({ websocket: goSocket })
   const { room: roomname } = useParams()
   useEffect(() => {
-    if (!send || !roomname) {
+    if (!send || !roomname || !username) {
       return
     }
-    send({ type: 'join', payload: roomname })
+    const payload = { roomname, username }
+    send({ type: 'join', payload })
     return () => {
-      send({ type: 'left', payload: roomname })
+      send({ type: 'leave', payload })
     }
-  }, [send, roomname])
+  }, [send, roomname, username])
   
   return <div>
     <h1>{roomname}</h1>

@@ -28,7 +28,6 @@ ReactDOM.render(
                       <Route path="/" element={<Lobby />} />
                     </Route>
                   </Routes>
-
               </HubProvider>
             </GoProvider>
           ) : (

@@ -9,6 +9,14 @@ function Create() {
   const { username } = useAuth()
   const {register, handleSubmit, formState, getValues} = useForm({
     resolver: (data) => {
+      if (!data.name) {
+        return {
+          values: data,
+          errors: {
+            name: 'Room name required.'
+          }
+        }
+      }
       if (rooms.includes(data.name)) {
         return {
           values: data,
@@ -40,7 +48,6 @@ function Create() {
       {formState.errors.name && <p>{formState.errors.name}</p>}
       <input type="submit" />
     </form>
-    <pre>{JSON.stringify(formState.errors, null, 2)}</pre>
   </div>
 }
 export default Create
