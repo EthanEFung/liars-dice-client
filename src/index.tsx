@@ -1,17 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+
 import './index.css';
 import { GoProvider } from './contexts/GoSocket';
-import {AuthProvider, AuthConsumer} from './contexts/Auth'
-import App from './App';
-
+import { AuthProvider, AuthConsumer } from './contexts/Auth'
+import { HubProvider } from 'contexts/Hub';
 import Auth from 'components/Auth'
 import Lobby from 'components/Lobby';
 import Create from 'components/Create';
 import Room from 'components/Room';
 import reportWebVitals from './reportWebVitals';
-import { HubProvider } from 'contexts/Hub';
+import App from './App';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -33,6 +33,7 @@ ReactDOM.render(
           ) : (
             <Routes>
               <Route path="/" element={<Auth />} />
+              <Route path="*" element={<Navigate replace to="/" />}></Route>
             </Routes>
           )}
         </AuthConsumer>

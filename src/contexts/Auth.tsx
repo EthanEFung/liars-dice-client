@@ -8,23 +8,46 @@
   creating a ton of users to ddos us
 */
 import React from 'react';
+import { getAuth, onAuthStateChanged, signInAnonymously } from 'firebase/auth'
+import { initializeApp } from 'firebase/app';
 
 interface State {
   username: string | null
-  setUsername: (name: string) => void
 }
 
 const Context = React.createContext<State | null>(null)
+
+initializeApp({
+  apiKey: process.env.REACT_APP_FB_KEY,
+  authDomain: process.env.REACT_APP_FB_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FB_PROJECT_ID,
+  appId: process.env.REACT_APP_FB_APP_ID,
+})
+const auth = getAuth()
+
 function AuthProvider(props: React.PropsWithChildren<unknown>) {
   const [{username}, setState] = React.useState<{username: string | null}>({ username: null })
-  const setUsername = React.useCallback((name: string) => {
-    setState((prev) => {
-      return {...prev, username: name}
+  React.useEffect(() => {
+    signInAnonymously(auth).then(() => {
+      console.log('signed in')
+    }).catch((err) => {
+      console.error(err)
     })
-  }, [setState])
+  }, [])
+  React.useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        user.getIdToken().then((token) => {
+          console.log({token, length: token.length})
+          setState({ username: token })
+        })
+      } else {
+        console.log('signed out')
+      }
+    })
+  }, [])
   return <Context.Provider value={{
     username,
-    setUsername
   }}>{props.children}</Context.Provider>
 }
 
